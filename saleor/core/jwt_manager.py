@@ -108,7 +108,7 @@ class JWTManager(JWTManagerBase):
             logger.error(f"Failed to deserialize private key: {e}")
             raise ImproperlyConfigured("Invalid RSA private key or password.") from e
 
-@classmethod
+    @classmethod
     def _load_debug_private_key(cls) -> rsa.RSAPrivateKey:
         key_path = join(settings.PROJECT_ROOT, cls.KEY_FILE_FOR_DEBUG)
         if exists(key_path):
