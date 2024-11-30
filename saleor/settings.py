@@ -58,7 +58,7 @@ def get_url_from_env(name, *, schemes=None) -> Optional[str]:
     return None
 
 
-DEBUG = get_bool_from_env("DEBUG", False)
+DEBUG = get_bool_from_env("DEBUG", True)
 
 SITE_ID = 1
 
