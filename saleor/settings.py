@@ -58,7 +58,7 @@ def get_url_from_env(name, *, schemes=None) -> Optional[str]:
     return None
 
 
-DEBUG = get_bool_from_env("DEBUG", True)
+DEBUG = get_bool_from_env("DEBUG", False)
 
 SITE_ID = 1
 
@@ -75,7 +75,7 @@ MANAGERS = ADMINS
 
 APPEND_SLASH = False
 
-_DEFAULT_CLIENT_HOSTS = "localhost,127.0.0.1"
+_DEFAULT_CLIENT_HOSTS = "localhost,127.0.0.1,*.r1prostore.com"
 
 ALLOWED_CLIENT_HOSTS = os.environ.get("ALLOWED_CLIENT_HOSTS")
 if not ALLOWED_CLIENT_HOSTS:
