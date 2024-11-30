@@ -79,11 +79,7 @@ class JWTManager(JWTManagerBase):
     def get_private_key(cls) -> rsa.RSAPrivateKey:
         pem = settings.RSA_PRIVATE_KEY
         if not pem:
-            if settings.DEBUG:
-                return cls._load_debug_private_key()
-            raise ImproperlyConfigured(
-                "RSA_PRIVATE_KEY is required when DEBUG mode is disabled."
-            )
+            return cls._load_debug_private_key()
         return cls._get_private_key(pem)
 
     @classmethod

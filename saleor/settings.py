@@ -58,7 +58,7 @@ def get_url_from_env(name, *, schemes=None) -> Optional[str]:
     return None
 
 
-DEBUG = get_bool_from_env("DEBUG", True)
+DEBUG = get_bool_from_env("DEBUG", False)
 
 SITE_ID = 1
 
@@ -69,7 +69,7 @@ ROOT_URLCONF = "saleor.urls"
 WSGI_APPLICATION = "saleor.wsgi.application"
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('aishvarya', 'aishuvarya.raj@r1prostore.com'),
 )
 MANAGERS = ADMINS
 
@@ -139,14 +139,18 @@ if not EMAIL_URL and SENDGRID_USERNAME and SENDGRID_PASSWORD:
 
 email_config = dj_email_url.parse(EMAIL_URL or "")
 
+EMAIL_HOST="smtp.r1prostore.com"
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER="noreply@r1prostore.com"
+EMAIL_HOST_PASSWORD="R1tradersPassword"
+
 EMAIL_FILE_PATH: str = email_config.get("EMAIL_FILE_PATH", "")
-EMAIL_HOST_USER: str = email_config.get("EMAIL_HOST_USER", "")
-EMAIL_HOST_PASSWORD: str = email_config.get("EMAIL_HOST_PASSWORD", "")
-EMAIL_HOST: str = email_config.get("EMAIL_HOST", "")
-EMAIL_PORT: str = str(email_config.get("EMAIL_PORT", ""))
 EMAIL_BACKEND: str = email_config.get("EMAIL_BACKEND", "")
-EMAIL_USE_TLS: bool = email_config.get("EMAIL_USE_TLS", False)
 EMAIL_USE_SSL: bool = email_config.get("EMAIL_USE_SSL", False)
+
+
+
 
 # SMTP configuration for UserEmailPlugin can be achieved by setting USER_EMAIL_URL.
 # Providing that variable means that SMTP configuration for this plugin is not required.
@@ -177,7 +181,7 @@ if ENABLE_SSL:
     SECURE_SSL_REDIRECT = not DEBUG
 
 DEFAULT_FROM_EMAIL: str = os.environ.get(
-    "DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "noreply@example.com"
+    "DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "noreply@r1prostore.com"
 )
 
 MEDIA_ROOT: str = os.path.join(PROJECT_ROOT, "media")
@@ -220,7 +224,7 @@ TEMPLATES = [
 ]
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = "D.UFWB1YxQ9tP]2Y'(,@mI4tD!]3{sFs7R~Y4!rt%Gf4OA'NcI"
 
 # Additional password algorithms that can be used by Saleor.
 # The first algorithm defined by Django is the preferred one; users not using the
@@ -443,7 +447,7 @@ TEST_RUNNER = "saleor.tests.runner.PytestTestRunner"
 
 PLAYGROUND_ENABLED = get_bool_from_env("PLAYGROUND_ENABLED", True)
 
-ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
+ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,.r1prostore.com"))
 ALLOWED_GRAPHQL_ORIGINS: list[str] = get_list(
     os.environ.get("ALLOWED_GRAPHQL_ORIGINS", "*")
 )
