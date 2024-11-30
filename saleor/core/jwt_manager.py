@@ -198,11 +198,6 @@ class JWTManager(JWTManagerBase):
     @classmethod
     def validate_configuration(cls):
         if not settings.RSA_PRIVATE_KEY:
-            if not settings.DEBUG:
-                raise ImproperlyConfigured(
-                    "Variable RSA_PRIVATE_KEY is not provided. "
-                    "It is required for running in not DEBUG mode."
-                )
             msg = (
                 "RSA_PRIVATE_KEY is missing. Using temporary key for local "
                 "development with DEBUG mode."
