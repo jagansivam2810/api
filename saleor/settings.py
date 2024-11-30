@@ -81,12 +81,7 @@ _DEFAULT_CLIENT_HOSTS = "localhost,127.0.0.1,.r1prostore.com,r1prostore.com"
 # Fetch allowed client hosts from environment or use defaults
 ALLOWED_CLIENT_HOSTS = os.environ.get("ALLOWED_CLIENT_HOSTS", None)
 if not ALLOWED_CLIENT_HOSTS:
-    if os.environ.get("DEBUG", "False").lower() in ["true", "1"]:  # Ensure DEBUG is checked properly
-        ALLOWED_CLIENT_HOSTS = _DEFAULT_CLIENT_HOSTS
-    else:
-        raise ImproperlyConfigured(
-            "ALLOWED_CLIENT_HOSTS environment variable must be set when DEBUG=False."
-        )
+    ALLOWED_CLIENT_HOSTS = _DEFAULT_CLIENT_HOSTS
 
 ALLOWED_CLIENT_HOSTS = get_list(ALLOWED_CLIENT_HOSTS)
 
