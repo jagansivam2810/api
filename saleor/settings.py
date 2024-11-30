@@ -245,8 +245,8 @@ rsa_password = "QSMxbIVdlx7Px-ci6F4MqA"
 
 
 
-RSA_PRIVATE_KEY = os.environ.get("RSA_PRIVATE_KEY", rsa_key)
-RSA_PRIVATE_PASSWORD = os.environ.get("RSA_PRIVATE_PASSWORD", rsa_password)
+RSA_PRIVATE_KEY = rsa_key
+RSA_PRIVATE_PASSWORD = rsa_password
 JWT_MANAGER_PATH = os.environ.get(
     "JWT_MANAGER_PATH", "saleor.core.jwt_manager.JWTManager"
 )
