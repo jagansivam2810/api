@@ -78,9 +78,17 @@ class JWTManager(JWTManagerBase):
     @cache
     def get_private_key(cls) -> rsa.RSAPrivateKey:
         pem = settings.RSA_PRIVATE_KEY
-        if not pem:
+        try:
+            if pem:
+                return cls._get_private_key(pem)
+            else:
+                logger.warning(
+                    "RSA_PRIVATE_KEY is missing. Attempting to generate a temporary debug key."
+                )
+                return cls._load_debug_private_key()
+        except Exception as e:
+            logger.error(f"Invalid or missing RSA private key: {e}")
             return cls._load_debug_private_key()
-        return cls._get_private_key(pem)
 
     @classmethod
     def _get_private_key(cls, pem: Union[str, bytes]) -> rsa.RSAPrivateKey:
@@ -90,17 +98,24 @@ class JWTManager(JWTManagerBase):
         password: Union[str, bytes, None] = settings.RSA_PRIVATE_PASSWORD
         if isinstance(password, str):
             password = password.encode("utf-8")
-        return cast(
-            rsa.RSAPrivateKey,
-            serialization.load_pem_private_key(pem, password=password),
-        )
 
-    @classmethod
+        try:
+            return cast(
+                rsa.RSAPrivateKey,
+                serialization.load_pem_private_key(pem, password=password),
+            )
+        except ValueError as e:
+            logger.error(f"Failed to deserialize private key: {e}")
+            raise ImproperlyConfigured("Invalid RSA private key or password.") from e
+
+@classmethod
     def _load_debug_private_key(cls) -> rsa.RSAPrivateKey:
         key_path = join(settings.PROJECT_ROOT, cls.KEY_FILE_FOR_DEBUG)
         if exists(key_path):
+            logger.info(f"Loading debug private key from {key_path}")
             return cls._load_local_private_key(key_path)
 
+        logger.info(f"Debug key not found. Generating a new key at {key_path}")
         return cls._create_local_private_key(key_path)
 
     @classmethod
@@ -197,20 +212,13 @@ class JWTManager(JWTManagerBase):
 
     @classmethod
     def validate_configuration(cls):
-        if not settings.RSA_PRIVATE_KEY:
-            msg = (
-                "RSA_PRIVATE_KEY is missing. Using temporary key for local "
-                "development with DEBUG mode."
-            )
-            logger.warning(color_style().WARNING(msg))
-
         cls.get_private_key.cache_clear()
         cls.get_public_key.cache_clear()
         try:
             cls.get_private_key()
         except Exception as e:
             raise ImproperlyConfigured(
-                f"Unable to load provided PEM private key. {e}"
+                f"Unable to load RSA private key. Error: {e}"
             ) from e
 
     @classmethod
