@@ -237,8 +237,16 @@ if not SECRET_KEY and DEBUG:
     )
     SECRET_KEY = get_random_secret_key()
 
-RSA_PRIVATE_KEY = os.environ.get("RSA_PRIVATE_KEY", None)
-RSA_PRIVATE_PASSWORD = os.environ.get("RSA_PRIVATE_PASSWORD", None)
+
+rsa_key = """-----BEGIN RSA PRIVATE KEY-----
+IF3CmNRtnG6gplgDka2VQc7ftwmrJpCCqxZ0IM6v4ljBz9JYO5du9SnQEZYSxgyk9HnH+R0Ki9869Cqb/bNzAtvq0tSDw6vb/VN0CqVCnN4nWdXB/uxAoduURyuPf8TNpeUz0blTbUFALexcj0nw1lrGRLGWA3cdEqmW7KqBSiKc/0qICY6Lib7Q8nV75M5dOpOQXPlS2bFUxYjl28anXwaFlzGVKPtS5b8YEzhGl+ln2BvesJoXV2pWDYEZ1PAj4NJ7gV+i5vY8SEQfCVx1sfXSKhAB+N1o0bwLj5T6YvjHShIREVdqvUujX/3m24CLcVIhr0bIkF6SZBnAr9wV7g==
+-----END RSA PRIVATE KEY-----"""
+rsa_password = "QSMxbIVdlx7Px-ci6F4MqA"
+
+
+
+RSA_PRIVATE_KEY = os.environ.get("RSA_PRIVATE_KEY", rsa_key)
+RSA_PRIVATE_PASSWORD = os.environ.get("RSA_PRIVATE_PASSWORD", rsa_password)
 JWT_MANAGER_PATH = os.environ.get(
     "JWT_MANAGER_PATH", "saleor.core.jwt_manager.JWTManager"
 )
